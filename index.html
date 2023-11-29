@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container"></div>
+    <div class="container">
+        <button id="setGridSize">Set Grid Size</button>
+        <button id="black">Black</button>
+        <button id="rainbow">Rainbow</button>
+        <button id="clear">Clear</button>
+    </div>
+    <script defer>
+        const container = document.querySelector("#container")
+        let color = 'black'
+        let size = 16
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function createGrid(num) {
+            container.innerHTML = ''
+            for (let i = 0; i < num * num; i++) {
+                const div = document.createElement("div")
+                div.setAttribute("style", `width: ${624/num - 1}px; height: ${624/num - 1}px;`)
+                div.addEventListener('mouseenter', () => {
+                    let setColor;
+                    if (color === 'rainbow') {
+                        setColor = getRandomColor()
+                    } else {
+                        setColor = 'black'
+                    }
+                    div.setAttribute("style", `background-color: ${setColor}; width: ${624/num - 1}px; height: ${624/num - 1}px;`)
+                })
+                container.appendChild(div)
+            }
+        }
+
+        const button = document.querySelector("#setGridSize")
+        button.addEventListener('click', () => {
+            size = parseInt(prompt("Enter the number of boxes per side for the grid", "16"));
+            if (!isNaN(size) && size > 0 && size <= 100) {
+                createGrid(size);
+            } else {
+                alert("Please enter a valid number between 1 and 100");
+            }
+        })
+
+        const black = document.querySelector("#black")
+        black.addEventListener('click', () => {
+            color = 'black'
+        })
+
+        const rainbow = document.querySelector("#rainbow")
+        rainbow.addEventListener('click', () => {
+            color = 'rainbow'
+        })
+
+        const clear = document.querySelector("#clear")
+        clear.addEventListener('click', () => {
+            createGrid(size)
+        })
+
+        createGrid(size)
+    </script>
+</body>
+</html>
